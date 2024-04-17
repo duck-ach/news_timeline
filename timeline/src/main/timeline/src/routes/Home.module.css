@@ -1,0 +1,45 @@
+.home_wrap {
+  width: 70%;
+  margin: 0 0 0 250px;
+}
+
+.content_box {
+  width: 25%;
+  border: 1px solid #000;
+}
+
+.box_img {
+  text-align: center;
+  width: 90%;
+  padding: 5%;
+}
+.box_img img {
+  /* width: 95%; */
+  width: 100%;
+}
+.box_underLine {
+  display: block;
+  border-bottom: 1px solid #000;
+  margin-bottom: 5px;
+}
+
+.box_title {
+  width: 90%;
+  margin: 0 auto;
+  border: 1px solid #000;
+  border-radius: 5px;
+}
+.box_text {
+  width: 90%;
+  border: 1px solid #000;
+  border-radius: 5px;
+  margin: 2% auto 0;
+}
+
+.box_under_text {
+  display: flex;
+  justify-content: space-around;
+}
+
+.box_line {
+}

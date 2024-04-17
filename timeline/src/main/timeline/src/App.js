@@ -4,8 +4,11 @@ import { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Link } from "react-router-dom";
 import axios from "axios";
+
+import Header from "./routes/Header";
 import Login from "./routes/Login";
-import styled from "./routes/Login.css";
+import Home from "./routes/Home";
+// import styled from "./routes/Login.css";
 import Join from "./routes/Join";
 
 function App() {
@@ -19,13 +22,14 @@ function App() {
 
   return (
     <Router>
+      <Header />
       <Routes>
         {/* "/" 경로에 대한 Route 설정 */}
         <Route
           path="/"
           element={
             <div className="App">
-              <Login />
+              <Home />
             </div>
           }
         />
