@@ -1,0 +1,10 @@
+spring:
+  application:
+  name: timeline
+# database connection
+datasource:
+  hikari:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    jdbc-url: jdbc:mysql://192.168.0.8:3306/timeline?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: tl_master
+    password: 1234
