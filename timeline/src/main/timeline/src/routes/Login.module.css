@@ -1,0 +1,78 @@
+.wrap {
+  margin: 5vw auto;
+  width: 70vw;
+  overflow: hidden;
+  border: 1px solid #000;
+}
+
+@media (min-width: 1200px) {
+  .wrap {
+    width: 40vw;
+  }
+}
+.wrap h2 {
+  margin: 5vw auto 2vw;
+  font-size: 3vw;
+}
+.login_wrap {
+  margin: 0 auto;
+  /* width: 70vw; */
+}
+.login_from {
+  width: 50%;
+  margin: 0 auto;
+}
+
+.text_input_area {
+  width: 100%;
+  text-align: center;
+  overflow: hidden;
+}
+.text_input_area input {
+  width: 90%;
+  height: 10px;
+  padding: 5% 0;
+  text-indent: 5px;
+  margin: 1vw auto;
+  display: inline-block;
+  border-radius: 20px;
+}
+
+.loginCheck {
+  width: 90%;
+  margin: 1vw auto;
+  text-align: left;
+}
+
+.loginCheck input {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  vertical-align: middle;
+}
+.loginCheck span {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.join_find_box {
+  width: 50%;
+  margin: 0 auto;
+}
+.join_find_box ul {
+  width: 90%;
+  margin: 1vw auto;
+  display: flex;
+  justify-content: space-evenly;
+}
+/* .join_find_box > ul > li:first-child::after {
+  content: "/";
+} */
+
+.login_btn {
+  width: 90%;
+  padding: 5%;
+  background: none;
+  border-radius: 20px;
+  font-size: 2vw;
+}
