@@ -1,6 +1,12 @@
 spring:
   application:
   name: timeline
+  devtools:
+    livereload:
+      enabled: true
+    remote:
+      restart:
+        enabled: true
 # database connection
 datasource:
   hikari:
