@@ -17,8 +17,12 @@ import java.util.Map;
 @Controller
 public class UsersController {
 
+    private final UsersService usersService;
+
     @Autowired
-    private UsersService usersService;
+    public UsersController(UsersService usersService) {
+        this.usersService = usersService;
+    }
 
     // 회원가입
     @PostMapping("/users/save")
@@ -48,5 +52,18 @@ public class UsersController {
     @PostMapping("/users/login")
     public void usersLogin(HttpServletRequest request, HttpServletResponse response) {
         usersService.login(request, response);
+    }
+
+    // 로그아웃
+    @GetMapping("/users/logout")
+    public void usersLogout(HttpServletRequest request, HttpServletResponse response) {
+        usersService.logout(request, response);
+    }
+
+    // 회원 정보 조회
+    @ResponseBody // 비동기 처리
+    @GetMapping(value="/users/info", produces= MediaType.APPLICATION_JSON_VALUE)
+    public Map<String, Object> usersInfo(HttpServletRequest request, HttpServletResponse response) {
+        return usersService.usersInfo(request, response);
     }
 }
