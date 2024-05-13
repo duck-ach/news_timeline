@@ -5,27 +5,27 @@ import styled from "./Home.module.css";
 function Home() {
   const [tabs, setTab] = useState([]);
 
-  useEffect(() => {
-    fetchTab();
-  }, []);
+  // useEffect(() => {
+  //   fetchTab();
+  // }, []);
 
   const [query, setQuery] = useState("스포츠"); // 초기값 "스포츠"로 설정
 
-  const fetchTab = async () => {
-    try {
-      const response = await Axios.get(
-        `http://localhost:8080/api_test?query=${query}`
-      );
-      // 실제 응답의 구조에 따라 데이터에 접근하여 상태에 저장
-      //setTab(response.data.items); // 예시: response.data.items
-      setTab(response.rss);
-
-      console.table(response);
-    } catch (error) {
-      console.error("에러 발생:", error);
-    }
-  };
-
+  // const fetchTab = async () => {
+  //   try {
+  //     const response = await Axios.get(
+  //       `http://localhost:8080/api_test?query=${query}`
+  //     );
+  //     // 실제 응답의 구조에 따라 데이터에 접근하여 상태에 저장
+  //     //setTab(response.data.items); // 예시: response.data.items
+  //     setTab(response.data.items);
+  //     console.log(news);
+  //     //  console.log(response.data);
+  //   } catch (error) {
+  //     console.error("에러 발생:", error);
+  //   }
+  // };
+  // console.table(tabs);
   return (
     <div className={styled.wrap}>
       Home
@@ -33,7 +33,7 @@ function Home() {
         <div className={styled.content_box}>
           <ul>
             {/* tabs 데이터를 반복하여 출력 */}
-            {tabs.map((item, index) => (
+            {/* {tabs.map((item, index) => (
               <li key={index}>
                 <div className={styled.box_line}>
                   <p className={styled.box_img}>
@@ -52,7 +52,7 @@ function Home() {
                   </div>
                 </div>
               </li>
-            ))}
+            ))} */}
           </ul>
         </div>
       </div>
