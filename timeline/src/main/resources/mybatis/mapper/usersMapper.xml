@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.raju.timeline.mapper.UsersMapper">
+
+    <!--회원가입) 유저 조회-->
+    <select id="selectUserByUserMap" parameterType="Map" resultType="UsersDTO">
+        SELECT USER_ID, ID, NICKNAME, GENDER, BIRTHDAY, JOIN_DATE, PW_MODIFY_DATE, SESSION_ID, SESSION_ID, SESSION_LIMIT_DATE, BANNED_STATE
+          FROM USERS
+        <where> <!-- if 태그를 썼기때문에 AND 나 OR이 먼저나오면, 알아서 무시한다. -->
+            <if test="id != null">
+                ID = #{id}
+            </if>
+            <if test="pw != null">
+                AND PW = #{pw}
+            </if>
+            <if test="nickname != null">
+                AND NICKNAME = #{nickname}
+            </if>
+        </where>
+    </select>
+
+    <!--회원가입-->
+    <insert id="insertUsers" parameterType="UsersDTO" useGeneratedKeys="true" keyProperty="userId">
+        INSERT INTO USERS(ID, NICKNAME, PW, GENDER, BIRTHDAY, AGREE_CODE, JOIN_DATE, BANNED_STATE)
+             VALUES (#{id}, #{nickname}, #{pw}, #{gender}, #{birthday}, 0, now(), 0)
+    </insert>
+
+    <!--세션-->
+    <update id="updateSessionInfo" parameterType="UsersDTO">
+        UPDATE USERS
+           SET SESSION_ID = #{sessionId}
+             , SESSION_LIMIT_DATE = #{sessionLimitDate}
+         WHERE ID = #{id}
+    </update>
+
+</mapper>
