@@ -6,6 +6,7 @@ import com.raju.timeline.util.SecurityUtil;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,11 +20,15 @@ import java.util.Map;
 @Service
 public class UsersServiceImpl implements UsersService {
 
-    @Autowired
-    private UsersMapper usersMapper;
+    private final UsersMapper usersMapper;
+
+    private final SecurityUtil securityUtil;
 
     @Autowired
-    private SecurityUtil securityUtil;
+    public UsersServiceImpl(UsersMapper usersMapper, SecurityUtil securityUtil) {
+        this.usersMapper = usersMapper;
+        this.securityUtil = securityUtil;
+    }
 
     // 회원가입
     @Transactional
@@ -164,5 +169,30 @@ public class UsersServiceImpl implements UsersService {
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("isNick", usersMapper.selectUserByMap(map) != null); // Null 이 아닐 때 조회되었으면 True
         return result;
+    }
+
+    @Override
+    public void logout(HttpServletRequest request, HttpServletResponse response) {
+
+        // 로그아웃 == 세션 초기화
+        HttpSession session = request.getSession();
+        if(session.getAttribute("loginUser") != null) {
+            session.invalidate();
+        }
+
+        // 로그인 유지 해제 == 쿠키 초기화
+        Cookie cookie = new Cookie("keepLogin", "");
+        cookie.setMaxAge(0);
+        cookie.setPath(request.getContextPath());
+        response.addCookie(cookie);
+
+    }
+
+    @Override
+    public Map<String, Object> usersInfo(HttpServletRequest request, HttpServletResponse response) {
+        // 세션 정보
+        HttpSession session = request.getSession();
+
+        return null;
     }
 }
