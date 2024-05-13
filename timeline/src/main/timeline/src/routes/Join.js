@@ -1,3 +1,7 @@
+import { Link } from "react-router-dom";
+
+import JoinEmail from "../routes/JoinEmail";
+import Home from "./Home";
 function Join() {
   return (
     <div className="wrap">
@@ -8,7 +12,9 @@ function Join() {
         <h3>가입 방식을 선택해주세요</h3>
 
         <div>
-          <button>이메일로 회원가입</button>
+          <Link to="/JoinEmail">
+            <button>이메일로 회원가입</button>
+          </Link>
           <p>소셜로 회원가입</p>
 
           <ul className="social_box">

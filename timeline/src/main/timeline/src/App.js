@@ -10,6 +10,7 @@ import Login from "./routes/Login";
 import Home from "./routes/Home";
 // import styled from "./routes/Login.css";
 import Join from "./routes/Join";
+import JoinEmail from "./routes/JoinEmail";
 
 function App() {
   const [hello, setHello] = useState("");
@@ -48,6 +49,15 @@ function App() {
           element={
             <div className="App">
               <Join />
+            </div>
+          }
+        />
+
+        <Route
+          path="/JoinEmail"
+          element={
+            <div className="App">
+              <JoinEmail />
             </div>
           }
         />
