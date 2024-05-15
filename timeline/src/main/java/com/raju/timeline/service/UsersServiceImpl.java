@@ -41,8 +41,8 @@ public class UsersServiceImpl implements UsersService {
         String birthday = request.getParameter("birthday");
 
         // (input type=text) XSS 방지
-        id = securityUtil.preventXSS(id);
-        nickname = securityUtil.preventXSS(nickname);
+//        id = securityUtil.preventXSS(id);
+//        nickname = securityUtil.preventXSS(nickname);
 
         // 비밀번호 암호화 처리
         pw = securityUtil.sha256(pw);
