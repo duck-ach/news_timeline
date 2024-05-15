@@ -1,6 +1,9 @@
 import styled from "./Login.module.css";
-
+//import { useLocation } from "react-router-dom";
 function Login() {
+  // const location = useLocation();
+  // const searchParams = new URLSearchParams(location.search);
+  // const redirectUrl = searchParams.get("redirect");
   return (
     <div className={styled.wrap}>
       <h2>로그인</h2>
@@ -44,6 +47,8 @@ function Login() {
               <a href="">구글 이미지</a>
             </li>
           </ul>
+          {/* hidden input에 직전의 URL 저장 */}
+          {/* <input type="hidden" name="redirect" value={redirectUrl || ""} /> */}
         </div>
       </div>
     </div>
