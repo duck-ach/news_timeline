@@ -1,9 +1,18 @@
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom"; // useNavigate
 import style from "./Header.module.css";
 
 import Home from "./Home";
 
 function Header() {
+  // const history = useNavigate();
+
+  // // 로그인 버튼 클릭시 실행됨
+  // const handleLogin = () => {
+  //   history.push(
+  //     "/login?redirect=" + encodeURIComponent(history.location.pathname)
+  //   );
+  // };
+
   return (
     <div className={style.wrap}>
       <div className={style.head_wrap}>
@@ -31,6 +40,9 @@ function Header() {
             <li>
               <Link to="/Join">회원가입</Link>
             </li>
+            {/* <li onClick={handleLogin}>
+              <Link to="/Login">로그인</Link>
+            </li> */}
             <li>
               <Link to="/Login">로그인</Link>
             </li>

@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useState } from "react";
 
 function JoinEmail() {
@@ -40,21 +41,36 @@ function JoinEmail() {
   const [month, setMonth] = useState("");
   const [day, setDay] = useState("");
   const [yangruck, setYangruck] = useState("");
+  const [isIdReduced, setIsIdReduced] = useState(false);
 
-  // 중복 아이디 쳌크
-  const idCheckSameId = (backendIds) => {
-    // 백엔드로부터 받은 ID 정보를 배열로 가정
-    // 예시: ['user1', 'user2', 'user3']
+  // 중복 확인 버튼 클릭 시 실행되는 함수
+  const handleCheckReduceId = () => {
+    // 입력된 아이디 값 가져오기
+    const inputId = id.trim(); // 입력값에서 앞뒤 공백 제거
 
-    // 사용자가 입력한 ID
-    const userInputId = id;
-    // 백엔드로부터 받은 ID 정보와 사용자가 입력한 ID를 비교하여 중복 여부 확인
-    const isDuplicate = backendIds.includes(userInputId);
-    if (isDuplicate) {
-      alert("중복된 아이디입니다.");
-    } else {
-      alert("사용 가능한 아이디입니다.");
+    // 아이디가 입력되었는지 확인
+    if (inputId === "") {
+      alert("아이디를 입력해주세요.");
+      return;
     }
+
+    // 백엔드로 아이디 중복 확인 요청 보내기
+    axios
+      .get(`/api/users/checkReduceId?id=${inputId}`)
+      .then((response) => {
+        // 백엔드로부터 받은 응답 처리
+        const isReduced = response.data.isReduced; // 예시로 받은 응답 데이터의 구조에 따라 변경
+        setIsIdReduced(isReduced);
+        if (isReduced) {
+          alert("사용 가능한 아이디입니다.");
+        } else {
+          alert("이미 사용 중인 아이디입니다.");
+        }
+      })
+      .catch((error) => {
+        console.error("중복 확인 요청 실패:", error);
+        alert("중복 확인에 실패했습니다.");
+      });
   };
 
   // 폼 핸들러 시작
@@ -63,21 +79,23 @@ function JoinEmail() {
 
     // 생년월일을 합쳐서 birthday 변수에 저장
     const birthday = `${year}-${month}-${day}`;
+    const dataToSend = {
+      id,
+      nickname,
+      pw,
+      gender,
+      birthday,
+      yangruck,
+    };
 
+    console.log(JSON.stringify(dataToSend)); // JSON 데이터를 콘솔에 출력
     // 데이터 이쿠요잇
-    fetch("여기 URL", {
+    fetch(`/api/users/save`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        id,
-        nickname,
-        pw,
-        gender,
-        birthday,
-        yangruck,
-      }),
+      body: JSON.stringify(dataToSend),
     })
       .then((response) => response.json())
       .then((data) => {
@@ -99,9 +117,10 @@ function JoinEmail() {
             type="text"
             value={id}
             onChange={(e) => setId(e.target.value)}
+            name="id"
           />
         </div>
-        <button type="button" onClick={idCheckSameId}>
+        <button type="button" onClick={handleCheckReduceId}>
           중복 체크
         </button>
         {/* ID 끝 */}
@@ -112,6 +131,7 @@ function JoinEmail() {
           <input
             type="text"
             value={nickname}
+            name="nickname"
             onChange={(e) => setNickname(e.target.value)}
           />
         </div>
@@ -133,9 +153,10 @@ function JoinEmail() {
         <input
           id="user_pw"
           type="password"
-          maxlength="10"
+          maxLength="10"
           placeholder="8글자이상"
           value={pw}
+          name="pw"
           onChange={(e) => setPw(e.target.value)}
           required
         />
@@ -146,28 +167,28 @@ function JoinEmail() {
         <input
           id="user_pw_ck"
           type="password"
-          maxlength="10"
+          maxLength="10"
           placeholder="8글자이상"
           required
         />
         {/*  비밀번호 끝 */}
         <br />
         {/* 성별 시작 */}
-        <div class="gender">
+        <div className="gender">
           <input
             type="radio"
             name="gender"
             value={gender}
             onChange={(e) => setGender(e.target.value)}
           />
-          <label for="women">여성</label>
+          <label htmlFor="women">여성</label>
           <input
             type="radio"
             name="gender"
             value={gender}
             onChange={(e) => setGender(e.target.value)}
           />
-          <label for="men">남성</label>
+          <label htmlFor="men">남성</label>
         </div>
         {/* 성별 끝 */}
         {/* 생년월일 시작 */}

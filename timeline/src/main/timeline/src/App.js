@@ -1,7 +1,12 @@
 import logo from "./logo.svg";
 import "./App.css";
 import { useEffect, useState } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useNavigate,
+} from "react-router-dom";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
@@ -13,13 +18,13 @@ import Join from "./routes/Join";
 import JoinEmail from "./routes/JoinEmail";
 
 function App() {
-  const [hello, setHello] = useState("");
+  // const [hello, setHello] = useState("");
 
-  useEffect(() => {
-    axios.get("/api/test").then((res) => {
-      setHello(res.data);
-    });
-  }, []);
+  // useEffect(() => {
+  //   axios.get("/api/test").then((res) => {
+  //     setHello(res.data);
+  //   });
+  // }, []);
 
   return (
     <Router>
