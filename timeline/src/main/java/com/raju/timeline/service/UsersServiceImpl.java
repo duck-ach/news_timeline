@@ -11,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -41,8 +39,8 @@ public class UsersServiceImpl implements UsersService {
         String birthday = request.getParameter("birthday");
 
         // (input type=text) XSS 방지
-//        id = securityUtil.preventXSS(id);
-//        nickname = securityUtil.preventXSS(nickname);
+        id = securityUtil.preventXSS(id);
+        nickname = securityUtil.preventXSS(nickname);
 
         // 비밀번호 암호화 처리
         pw = securityUtil.sha256(pw);
@@ -57,37 +55,23 @@ public class UsersServiceImpl implements UsersService {
 
         int result = usersMapper.insertUsers(usersDTO);
 
-        // response data
-        try {
-            response.setContentType("text/html; charset=UTF-8");
-            PrintWriter out = response.getWriter();
-            Map<String, Object> userMap = new HashMap<String, Object>();
-            userMap.put("id", id);
+        response.setContentType("text/html; charset=UTF-8");
+        Map<String, Object> userMap = new HashMap<String, Object>();
+        userMap.put("id", id);
 
-            if(result > 0) {
-                request.getSession().setAttribute("loginUser", usersMapper.selectUserByMap(userMap));
-
-                out.println("<script>");
-                out.println("alert('환영합니다 :)<br>회원 가입이 완료되었습니다.');");
-                out.println("location.href='/';");
-                out.println("</script>");
-            } else {
-                out.println("<script>");
-                out.println("alert('회원가입 도중 오류가 발생했습니다.<br>다시 시도해주세요');");
-                out.println("history.back();");
-                out.println("</script>");
-            }
-            out.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+        if(result > 0) {
+            request.getSession().setAttribute("loginUser", usersMapper.selectUserByMap(userMap));
+        } else {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
+
     }
 
     @Override
     public void login(HttpServletRequest request, HttpServletResponse response) {
-        String url = request.getParameter("url");
         String id = request.getParameter("id");
         String pw = request.getParameter("pw");
+        String keepLogin = request.getParameter("keepLogin");
 
         pw = securityUtil.sha256(pw);
 
@@ -99,31 +83,17 @@ public class UsersServiceImpl implements UsersService {
         UsersDTO loginUser = usersMapper.selectUserByMap(userMap);
         if(loginUser != null) {
 
-            // 로그인 유지
-            keepLogin(request, response);
+            if(keepLogin != null) {
+                // 로그인 유지
+                keepLogin(request, response);
+            }
 
             // 세션추가 == 로그인 처리
             request.getSession().setAttribute("loginUser", loginUser);
 
-            try {
-                response.sendRedirect(url);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
         } else { // id, pw 일치하는 회원 없을 경우
-                try {
-                    response.setContentType("text/html; charset=UTF-8");
-                    PrintWriter out = response.getWriter();
-
-                    out.println("<script>");
-                    out.println("alert('일치하는 회원 정보가 없습니다.');");
-                    out.println("history.back();");
-                    out.println("</script>");
-                    out.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+            response.setContentType("text/html; charset=UTF-8");
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
 
     }
@@ -190,9 +160,21 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public Map<String, Object> usersInfo(HttpServletRequest request, HttpServletResponse response) {
-        // 세션 정보
-        HttpSession session = request.getSession();
 
-        return null;
+        Map<String, Object> map = new HashMap<String, Object>();
+        HttpSession session = request.getSession();
+        if(session.getAttribute("loginUser") != null) {
+            String sessionId = session.getId();
+            map.put("sessionId", sessionId);
+            UsersDTO user = usersMapper.selectUserByMap(map);
+            map.put("id", user.getId());
+            map.put("nickname", user.getNickname());
+            map.put("gender", user.getGender());
+            map.put("birthday", user.getBirthday());
+        } else {
+            response.setContentType("text/html; charset=UTF-8");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        }
+        return map;
     }
 }

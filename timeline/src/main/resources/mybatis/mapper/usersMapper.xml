@@ -20,6 +20,9 @@
             <if test="nickname != null">
                 AND NICKNAME = #{nickname}
             </if>
+            <if test="sessionId != null">
+                AND SESSION_ID = #{sessionId}
+            </if>
         </where>
     </select>
 
