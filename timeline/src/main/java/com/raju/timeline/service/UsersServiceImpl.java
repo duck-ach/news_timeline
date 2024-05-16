@@ -143,19 +143,18 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response) {
-
         // 로그아웃 == 세션 초기화
         HttpSession session = request.getSession();
         if(session.getAttribute("loginUser") != null) {
             session.invalidate();
+            // 로그인 유지 해제 == 쿠키 초기화
+            Cookie cookie = new Cookie("keepLogin", "");
+            cookie.setMaxAge(0);
+            cookie.setPath(request.getContextPath());
+            response.addCookie(cookie);
+        } else {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
-
-        // 로그인 유지 해제 == 쿠키 초기화
-        Cookie cookie = new Cookie("keepLogin", "");
-        cookie.setMaxAge(0);
-        cookie.setPath(request.getContextPath());
-        response.addCookie(cookie);
-
     }
 
     @Override
