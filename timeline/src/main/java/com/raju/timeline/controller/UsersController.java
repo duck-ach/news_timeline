@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
@@ -32,18 +33,22 @@ public class UsersController {
     // 아이디 중복 체크
     @ResponseBody // 비동기 처리
     @GetMapping(value="/api/users/checkReduceId", produces= MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> checkReduceId(String id) {
+    public Map<String, Object> checkReduceId(@RequestParam(value = "id", required = false, defaultValue = "") String id) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("id", id);
+        System.out.println("map = " + map);
+        System.out.println("result = " + usersService.isReduceId(map));
         return usersService.isReduceId(map);
     }
 
     // 닉네임 중복 체크
     @ResponseBody // 비동기 처리
     @GetMapping(value="/api/users/checkReduceNick", produces= MediaType.APPLICATION_JSON_VALUE)
-    public Map<String, Object> checkReduceNick(String nickname) {
+    public Map<String, Object> checkReduceNick(@RequestParam(value = "nickname", required = false, defaultValue = "") String nickname) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("nickname", nickname);
+        System.out.println("map = " + map);
+        System.out.println("result = " + usersService.checkReduceNick(map));
         return usersService.checkReduceNick(map);
     }
 
