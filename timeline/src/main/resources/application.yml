@@ -1,0 +1,26 @@
+spring:
+  application:
+  name: timeline
+  devtools:
+    livereload:
+      enabled: true
+    remote:
+      restart:
+        enabled: true
+  web:
+    resources:
+      static-locations: /resources/**
+
+  # database connection
+  datasource:
+    hikari:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      username: tl_master
+      password: 1234
+      jdbc-url: jdbc:mysql://192.168.0.9:3306/timeline?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+      #jdbc-url: jdbc:mysql://localhost:3306/timeline?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+
+# mybatis
+mybatis:
+  config-location: mybatis/config/mybatis-config.xml
+  mapper-locations: mybatis/mapper/*.xml

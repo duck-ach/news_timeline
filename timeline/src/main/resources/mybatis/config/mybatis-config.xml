@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+    <settings>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+
+    <typeAliases>
+        <typeAlias type="com.raju.timeline.domain.UsersDTO" alias="UsersDTO" />
+        <typeAlias type="com.raju.timeline.domain.HumorBoardDTO" alias="HumorBoardDTO" />
+        <typeAlias type="com.raju.timeline.domain.HumorCommentDTO" alias="HumorCommentDTO" />
+        <typeAlias type="com.raju.timeline.domain.ImgDTO" alias="ImgDTO" />
+    </typeAliases>
+
+</configuration>
