@@ -43,7 +43,7 @@ function Header() {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태
 
-  const navigate = useNavigate;
+  const navigate = useNavigate();
 
   useEffect(() => {
     // 페이지 로드 시 쿠키 읽기
@@ -61,7 +61,7 @@ function Header() {
   const handleLogin = () => {
     // navigate({ state: { value: location.pathname } });
     // navigate("/Login", { state: { from: location.pathname } });
-    navigate(location.pathname);
+    navigate("/Login", { replace: true, state: { from: location.pathname } });
 
     console.log(location.pathname);
   };
@@ -117,7 +117,7 @@ function Header() {
                 <li>
                   {/* <Link to={`/${urlBack}/Login`}>로그인</Link> */}
 
-                  <Link
+                  {/* <Link
                     to={{
                       pathname: "/Login",
                       state: { from: location.pathname },
@@ -125,7 +125,8 @@ function Header() {
                     onClick={handleLogin}
                   >
                     로그인
-                  </Link>
+                  </Link> */}
+                  <span onClick={handleLogin}>로그인</span>
                 </li>
               </>
             )}

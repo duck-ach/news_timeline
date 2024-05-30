@@ -7,10 +7,11 @@ function Login() {
   const [id, setId] = useState("");
   const [pw, setPw] = useState("");
   const [keepLoggedIn, setKeepLoggedIn] = useState(false); // 체크박스 상태를 관리합니다.
-  let { from } = useLocation();
+  const location = useLocation();
+  const { from } = location.state || { from: { pathname: "/" } };
   //const { from } = location.state || { from: "/" };
 
-  console.log(from);
+  console.log("Navigated from:", from);
 
   const handleSubmit = (event) => {
     event.preventDefault(); // 기본 제출동작 방지용
@@ -36,14 +37,19 @@ function Login() {
     })
       .then((response) => {
         if (!response.ok) {
-          throw new Error("서버 오류가 발생했습니다.");
+          // throw new Error("서버 오류가 발생했습니다.");
+          if (response.status === 401) {
+            throw new Error("아이디 혹은 비밀번호가 맞지 않습니다.");
+          } else {
+            throw new Error("서버 오류가 발생했습니다.");
+          }
         }
         return response.text();
       })
       .then((data) => {
         console.log("서버 응답 ", data);
         alert("어서오세요! 기다리고 있었어요!");
-        window.location.replace(from.pathname);
+        window.location.replace(from);
         // window.location.href = previousPath; // previousPath로 리디렉션
         // 로그인 성공 시 이전 페이지로 이동
         // const { state } = location;
@@ -53,9 +59,11 @@ function Login() {
         // navigate(from);
       })
       .catch((error) => {
-        alert("서버 응답 형식이 잘못되었습니다.");
-
-        alert(error.message);
+        if (error.message === "아이디 혹은 비밀번호가 맞지 않습니다.") {
+          alert("아이디 혹은 비밀번호가 맞지 않습니다.");
+        } else {
+          alert("서버 응답 형식이 잘못되었습니다.\n" + error.message);
+        }
       });
   };
 
@@ -78,6 +86,7 @@ function Login() {
               value={pw}
               onChange={(e) => setPw(e.target.value)}
               placeholder="비밀번호"
+              type="password"
             />
           </div>
           <div className={styled.loginCheck}>

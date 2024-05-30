@@ -15,15 +15,6 @@ function JoinEmail() {
   }
 
   // 월 옵션 생성
-  // const monthOptions = [];
-  // for (let month = 1; month <= 12; month++) {
-  //   monthOptions.push(
-  //     <option key={month} value={month}>
-  //       {month}월
-  //     </option>
-  //   );
-  // }
-  // 월 옵션 생성
   const monthOptions = [];
   for (let month = 1; month <= 12; month++) {
     const monthString = month < 10 ? `0${month}` : `${month}`; // 한 자릿수일 경우 앞에 0을 추가
@@ -57,8 +48,6 @@ function JoinEmail() {
   const [isNickReduced, setIsNickReduced] = useState(null);
   const [isIdReduced, setIsIdReduced] = useState(null);
 
-  const handleSetAlertPw = () => {};
-
   // 중복 확인 버튼 클릭 시 실행되는 함수
   const handleCheckReduce = (type) => {
     // 입력된 아이디 값 가져오기
@@ -88,16 +77,6 @@ function JoinEmail() {
         const isReduced =
           type === "nickname" ? response.data.isNick : response.data.isUser;
 
-        //  setIsIdReduced(isReduced);
-        // false면 사용 가능함
-        // if (isNick) {
-        //   alert("이미 사용 중인 닉네임입니다.");
-        //   setIsNickReduced = false;
-        // } else {
-        //   alert("사용 가능한 닉네임입니다.");
-        //   setIsNickReduced = true;
-        // }
-        // console.log("isNickReduced : " + isNickReduced);
         if (type === "nickname") {
           setIsNickReduced(isReduced);
           alert(
@@ -121,9 +100,50 @@ function JoinEmail() {
       });
   };
 
+  const isIdValid = (id) => {
+    const idRegex = /^[a-zA-Z0-9]{4,15}$/; // 영문자, 숫자,  이루어진 4자 이상의 10자 이하
+    return idRegex.test(id);
+  };
+
+  const isNicknameValid = (nickname) => {
+    const nickRegex = /^[a-zA-Z0-9가-힣]{4,15}$/; // 영문자, 숫자, 한글 이루어진 4자 이상의 15자 이하
+    return nickRegex.test(nickname);
+  };
+
+  const isPwValid = (pw) => {
+    const pwRegex =
+      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()-_+=])(?=.*[a-zA-Z]).{8,}$/;
+    //  8자 이상
+    // 적어도 하나의 숫자, 소문자, 대문자 , 특수문자 필요
+    return pwRegex.test(pw);
+  };
+
   // 폼 핸들러 시작
   const handlesSubmit = (event) => {
     event.preventDefault(); // 기본 제출동작 방지용
+
+    // 아이디 유효성 검사
+    if (!isIdValid(id)) {
+      alert("아이디는 영문자와 숫자로 이루어진 4자 이상이어야 합니다.");
+      return;
+    }
+
+    // 닉네임 유효성 검사
+    if (!isNicknameValid(nickname)) {
+      alert("닉네임은 영문과 숫자, 한글로 이루어진 4자 이상이어야 합니다.");
+      return;
+    }
+
+    if (!isPwValid(pw)) {
+      alert(`비밀번호는 다음을 포함해야 합니다:
+- 최소 8자 이상
+- 숫자
+- 소문자
+- 대문자
+- 특수문자 (!@#$%^&*()-_+=)`);
+      return;
+    }
+
     // 생년월일 데이터를 이용하여 뒤의 두 자리 숫자를 추출
     const twoDigitYear = String(year).substring(2);
 
@@ -145,6 +165,11 @@ function JoinEmail() {
     }
     if (isNickReduced) {
       alert("이미 사용 중인 닉네임입니다.");
+      return;
+    }
+
+    if (alertPw === "비밀번호가 일치하지 않습니다.") {
+      alert("비밀번호가 일치하지 않습니다.");
       return;
     }
 
@@ -188,7 +213,10 @@ function JoinEmail() {
             type="text"
             value={id}
             className={styled.join_all_input}
-            onChange={(e) => setId(e.target.value)}
+            onChange={(e) => {
+              setId(e.target.value);
+              setIsIdReduced(null);
+            }}
             name="id"
           />
           <button
@@ -212,7 +240,10 @@ function JoinEmail() {
             className={styled.join_all_input}
             value={nickname}
             name="nickname"
-            onChange={(e) => setNickname(e.target.value)}
+            onChange={(e) => {
+              setNickname(e.target.value);
+              setIsNickReduced(null);
+            }}
           />
           <button
             type="button"
