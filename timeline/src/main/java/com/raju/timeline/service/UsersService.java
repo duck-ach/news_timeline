@@ -15,4 +15,5 @@ public interface UsersService {
     public Map<String, Object> checkReduceNick(Map<String, Object> map);
     public void logout(HttpServletRequest request, HttpServletResponse response);
     public Map<String, Object> usersInfo(HttpServletRequest request, HttpServletResponse response);
+
 }
