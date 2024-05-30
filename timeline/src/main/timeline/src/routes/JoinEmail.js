@@ -15,11 +15,21 @@ function JoinEmail() {
   }
 
   // 월 옵션 생성
+  // const monthOptions = [];
+  // for (let month = 1; month <= 12; month++) {
+  //   monthOptions.push(
+  //     <option key={month} value={month}>
+  //       {month}월
+  //     </option>
+  //   );
+  // }
+  // 월 옵션 생성
   const monthOptions = [];
   for (let month = 1; month <= 12; month++) {
+    const monthString = month < 10 ? `0${month}` : `${month}`; // 한 자릿수일 경우 앞에 0을 추가
     monthOptions.push(
-      <option key={month} value={month}>
-        {month}월
+      <option key={month} value={monthString}>
+        {monthString}월
       </option>
     );
   }
@@ -72,6 +82,7 @@ function JoinEmail() {
       )
 
       .then((response) => {
+        console.log(type + inputValue);
         // 백엔드로부터 받은 응답 처리
         //  const isReduced  = response.data.isReduced ; // 예시로 받은 응답 데이터의 구조에 따라 변경
         const isReduced =
@@ -94,6 +105,7 @@ function JoinEmail() {
               ? "이미 사용 중인 닉네임입니다."
               : "사용 가능한 닉네임입니다."
           );
+          console.log(isReduced);
         } else {
           setIsIdReduced(isReduced);
           alert(
@@ -112,7 +124,12 @@ function JoinEmail() {
   // 폼 핸들러 시작
   const handlesSubmit = (event) => {
     event.preventDefault(); // 기본 제출동작 방지용
+    // 생년월일 데이터를 이용하여 뒤의 두 자리 숫자를 추출
+    const twoDigitYear = String(year).substring(2);
 
+    // 생년월일을 합쳐서 birthday 변수에 저장
+    const birthday = `${twoDigitYear}-${month}-${day}`;
+    console.log(birthday);
     if (isIdReduced === null) {
       alert("아이디 중복 검사를 해주세요.");
       return;
@@ -122,18 +139,15 @@ function JoinEmail() {
       return;
     }
 
-    if (!isNickReduced) {
+    if (isIdReduced) {
+      alert("이미 사용 중인 아이디입니다.");
+      return;
+    }
+    if (isNickReduced) {
       alert("이미 사용 중인 닉네임입니다.");
       return;
     }
 
-    if (!isIdReduced) {
-      alert("이미 사용 중인 아이디입니다.");
-      return;
-    }
-
-    // 생년월일을 합쳐서 birthday 변수에 저장
-    const birthday = `${year}-${month}-${day}`;
     const dataToSend = {
       id,
       nickname,
@@ -156,28 +170,11 @@ function JoinEmail() {
       .then((data) => {
         console.log("서버 응답 ", data);
         alert("회원가입이 완료되었습니다.");
+        window.location.href = "/home";
       })
       .catch((error) => {
         console.log("에러발생 : ", error);
       });
-
-    //   console.log(JSON.stringify(dataToSend)); // JSON 데이터를 콘솔에 출력
-    //   // 데이터 이쿠요잇
-    //   fetch(`/api/users/save`, {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(dataToSend),
-    //   })
-    //     .then((response) => response.json())
-    //     .then((data) => {
-    //       console.log("서버 응답 ", data);
-    //     })
-    //     .catch((error) => {
-    //       console.log("에러발생 : ", error);
-    //     });
-    // };
   };
   return (
     <div className={styled.wrap}>
@@ -348,7 +345,8 @@ function JoinEmail() {
               <option value="">일</option>
               {dayOptions}
             </select>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            {/* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; */}
+            <br />
             <input
               type="radio"
               name="yangruck"

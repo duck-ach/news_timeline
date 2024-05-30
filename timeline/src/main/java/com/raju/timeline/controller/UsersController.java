@@ -27,6 +27,7 @@ public class UsersController {
     // 회원가입
     @PostMapping("/api/users/save")
     public void usersSave(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("가입 컨트롤러 들어옴");
         usersService.save(request, response);
     }
 
@@ -43,7 +44,7 @@ public class UsersController {
 
     // 닉네임 중복 체크
     @ResponseBody // 비동기 처리
-    @GetMapping(value="/api/users/checkReduceNick", produces= MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value="/api/users/checkReduceNickname", produces= MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> checkReduceNick(@RequestParam(value = "nickname", required = false, defaultValue = "") String nickname) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("nickname", nickname);
