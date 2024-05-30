@@ -180,19 +180,25 @@ function JoinEmail() {
     // };
   };
   return (
-    <div>
-      <h2>회원 가입</h2>
+    <div className={styled.wrap}>
+      <h2 className={styled.title}>회원 가입</h2>
       <form onSubmit={handlesSubmit}>
         {/* ID 시작 */}
-        <div>
-          <label>아이디 : </label>
+        <div className={styled.input_box}>
+          <label>아이디</label>
+          <br />
           <input
             type="text"
             value={id}
+            className={styled.join_all_input}
             onChange={(e) => setId(e.target.value)}
             name="id"
           />
-          <button type="button" onClick={() => handleCheckReduce("id")}>
+          <button
+            type="button"
+            className={styled.check_btn}
+            onClick={() => handleCheckReduce("id")}
+          >
             중복 체크
           </button>
         </div>
@@ -200,16 +206,22 @@ function JoinEmail() {
         {/* ID 끝 */}
 
         {/* 닉네임 시작 */}
-        <div>
-          <label>닉네임 :</label>
+        <div className={styled.input_box}>
+          <label>닉네임</label>
+          <br />
           <input
             type="text"
             id="nickname"
+            className={styled.join_all_input}
             value={nickname}
             name="nickname"
             onChange={(e) => setNickname(e.target.value)}
           />
-          <button type="button" onClick={() => handleCheckReduce("nickname")}>
+          <button
+            type="button"
+            className={styled.check_btn}
+            onClick={() => handleCheckReduce("nickname")}
+          >
             중복 체크
           </button>
         </div>
@@ -225,50 +237,61 @@ function JoinEmail() {
 
         {/*  비밀번호 시작  */}
 
-        <div>
-          <label>비밀번호 : </label>
-        </div>
-        <input
-          id="user_pw"
-          type="password"
-          maxLength="10"
-          placeholder="8글자이상"
-          value={pw}
-          name="pw"
-          onChange={(e) => setPw(e.target.value)}
-          required
-        />
-        <br />
-        <div>
-          <label>비밀번호 확인 : </label>
-        </div>
-        <input
-          id="user_pw_ck"
-          type="password"
-          maxLength="10"
-          placeholder="8글자이상"
-          required
-          onChange={(e) => {
-            setCheckPw(e.target.value);
-            setAlertPw(
-              e.target.value == pw
-                ? "비밀번호가 일치합니다."
-                : "비밀번호가 일치하지 않습니다."
-            );
-          }}
-        />
-        <p>
+        <div className={styled.input_box}>
+          <label>비밀번호</label>
+          <br />
+
           <input
-            value={alertPw}
-            readOnly
-            placeholder="비밀번호 확인"
-            className={styled.checkPw_read}
+            id="user_pw"
+            type="password"
+            maxLength="10"
+            placeholder="8글자이상"
+            value={pw}
+            className={styled.join_all_input}
+            name="pw"
+            onChange={(e) => setPw(e.target.value)}
+            required
+          />
+        </div>
+        <br />
+        <div className={styled.input_box}>
+          <p
             style={{
               color:
                 alertPw === "비밀번호가 일치하지 않습니다." ? "red" : "black",
             }}
+          >
+            {alertPw || "비밀번호 확인"}
+            {/* <input
+              value={alertPw}
+              readOnly
+              placeholder="비밀번호 확인"
+              className={styled.checkPw_read}
+              style={{
+                color:
+                  alertPw === "비밀번호가 일치하지 않습니다." ? "red" : "black",
+              }}
+            /> */}
+          </p>
+          {/* <label>비밀번호 확인</label> */}
+
+          <input
+            id="user_pw_ck"
+            className={styled.join_all_input}
+            type="password"
+            maxLength="10"
+            placeholder="8글자이상"
+            required
+            onChange={(e) => {
+              setCheckPw(e.target.value);
+              setAlertPw(
+                e.target.value == pw
+                  ? "비밀번호가 일치합니다."
+                  : "비밀번호가 일치하지 않습니다."
+              );
+            }}
           />
-        </p>
+        </div>
         {/*  비밀번호 끝 */}
         <br />
         {/* 성별 시작 */}
