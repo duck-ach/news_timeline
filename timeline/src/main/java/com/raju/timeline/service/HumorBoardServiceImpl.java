@@ -6,8 +6,14 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class HumorBoardServiceImpl implements HumorBoardService {
+
     @Override
-    public void addHumorBoard(HttpServletRequest request, HttpServletResponse response) {
+    public void tmpSaveHumorBoard(HttpServletRequest request, HttpServletResponse response) {
+
+    }
+
+    @Override
+    public void saveHumorBoard(HttpServletRequest request, HttpServletResponse response) {
 
     }
 }

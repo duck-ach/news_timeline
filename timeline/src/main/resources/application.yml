@@ -24,3 +24,8 @@ spring:
 mybatis:
   config-location: mybatis/config/mybatis-config.xml
   mapper-locations: mybatis/mapper/*.xml
+
+# captcha
+api:
+  client_id: E4GVk9DUr941MwQkCkN3
+  client_secret: gj52u3dQ2n
