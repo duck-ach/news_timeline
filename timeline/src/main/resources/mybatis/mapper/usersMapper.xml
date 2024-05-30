@@ -8,7 +8,7 @@
 
     <!--회원가입) 유저 조회-->
     <select id="selectUserByMap" parameterType="Map" resultType="UsersDTO">
-        SELECT USER_ID, ID, NICKNAME, GENDER, BIRTHDAY, JOIN_DATE, PW_MODIFY_DATE, SESSION_ID, SESSION_ID, SESSION_LIMIT_DATE, BANNED_STATE
+        SELECT USER_ID, ID, NICKNAME, GENDER, BIRTHDAY, JOIN_DATE, PW_MODIFY_DATE, SESSION_ID, SESSION_LIMIT_DATE, BANNED_STATE
           FROM USERS
         <where> <!-- if 태그를 썼기때문에 AND 나 OR이 먼저나오면, 알아서 무시한다. -->
             <if test="id != null">

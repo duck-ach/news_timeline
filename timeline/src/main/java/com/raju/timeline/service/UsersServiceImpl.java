@@ -137,6 +137,7 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public Map<String, Object> checkReduceNick(Map<String, Object> map) {
         Map<String, Object> result = new HashMap<String, Object>();
+        System.out.println("serviceImpl : " + map);
         result.put("isNick", usersMapper.selectUserByMap(map) != null); // Null 이 아닐 때 조회되었으면 True
         return result;
     }
