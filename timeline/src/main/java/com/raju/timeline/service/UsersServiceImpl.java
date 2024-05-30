@@ -60,6 +60,7 @@ public class UsersServiceImpl implements UsersService {
         userMap.put("id", id);
 
         if(result > 0) {
+            System.out.println("result = " + result);
             request.getSession().setAttribute("loginUser", usersMapper.selectUserByMap(userMap));
         } else {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -93,7 +94,7 @@ public class UsersServiceImpl implements UsersService {
 
         } else { // id, pw 일치하는 회원 없을 경우
             response.setContentType("text/html; charset=UTF-8");
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         }
 
     }
