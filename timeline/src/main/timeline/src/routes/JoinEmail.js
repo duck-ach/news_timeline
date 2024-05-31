@@ -122,6 +122,7 @@ function JoinEmail() {
   const handlesSubmit = (event) => {
     event.preventDefault(); // 기본 제출동작 방지용
 
+    console.log(gender);
     // 아이디 유효성 검사
     if (!isIdValid(id)) {
       alert("아이디는 영문자와 숫자로 이루어진 4자 이상이어야 합니다.");
@@ -327,14 +328,14 @@ function JoinEmail() {
           <input
             type="radio"
             name="gender"
-            value={gender}
+            value="여성"
             onChange={(e) => setGender(e.target.value)}
           />
           <label htmlFor="women">여성</label>
           <input
             type="radio"
             name="gender"
-            value={gender}
+            value="남성"
             onChange={(e) => setGender(e.target.value)}
           />
           <label htmlFor="men">남성</label>
@@ -378,7 +379,7 @@ function JoinEmail() {
             </select>
             {/* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; */}
             <br />
-            <input
+            {/* <input
               type="radio"
               name="yangruck"
               value={yangruck}
@@ -391,7 +392,8 @@ function JoinEmail() {
               value={yangruck}
               onChange={(e) => setYangruck(e.target.value)}
             />
-            음력
+            음력 */}
+            <br />
           </p>
         </div>
         {/* 생년월일 끝 */}

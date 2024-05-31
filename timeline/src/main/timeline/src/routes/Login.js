@@ -3,15 +3,15 @@ import styled from "./Login.module.css";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import Header from "./Header";
-function Login() {
+function Login({ onLogin }) {
   const [id, setId] = useState("");
   const [pw, setPw] = useState("");
   const [keepLoggedIn, setKeepLoggedIn] = useState(false); // 체크박스 상태를 관리합니다.
   const location = useLocation();
+  const navigate = useNavigate();
   const { from } = location.state || { from: { pathname: "/" } };
-  //const { from } = location.state || { from: "/" };
 
-  console.log("Navigated from:", from);
+  // console.log("Navigated from:", from);
 
   const handleSubmit = (event) => {
     event.preventDefault(); // 기본 제출동작 방지용
@@ -34,6 +34,7 @@ function Login() {
       // URL 파라미터 추가
       method: "POST",
       body: formData,
+      credentials: "include", // include cookies in the request
     })
       .then((response) => {
         if (!response.ok) {
@@ -49,14 +50,14 @@ function Login() {
       .then((data) => {
         console.log("서버 응답 ", data);
         alert("어서오세요! 기다리고 있었어요!");
-        window.location.replace(from);
-        // window.location.href = previousPath; // previousPath로 리디렉션
-        // 로그인 성공 시 이전 페이지로 이동
-        // const { state } = location;
-        // const from = state ? state.from : "/";
-        // console.log(historys);
-        // history.push(from);
-        // navigate(from);
+        // window.location.replace(from);
+        navigate(from);
+        // 로그인 성공 시 로컬 스토리지에 로그인 상태 저장
+        localStorage.setItem("isAuthenticated", "true");
+        console.log(
+          "로컬스토리지 : " + localStorage.getItem("isAuthenticated")
+        );
+        onLogin();
       })
       .catch((error) => {
         if (error.message === "아이디 혹은 비밀번호가 맞지 않습니다.") {

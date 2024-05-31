@@ -18,37 +18,32 @@ import Home from "./routes/Home";
 // import styled from "./routes/Login.css";
 import Join from "./routes/Join";
 import JoinEmail from "./routes/JoinEmail";
+import UserInfo from "./routes/UserInfo";
 
 function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const isAuth = localStorage.getItem("isAuthenticated") === "true";
+    console.log(
+      "app 로컬스토리지 : " + localStorage.getItem("isAuthenticated")
+    );
+
+    setIsAuthenticated(isAuth);
+    console.log("isAuthenticated : " + isAuthenticated);
+  }, [isAuthenticated]);
+
   return (
     <Router>
       <React.StrictMode>
-        <Header />
-        <AppContent />
+        <Header isAuthenticated={isAuthenticated} />
+        <AppContent setIsAuthenticated={setIsAuthenticated} />
       </React.StrictMode>
     </Router>
   );
 }
 
-function AppContent() {
-  // const [hello, setHello] = useState("");
-
-  // useEffect(() => {
-  //   axios.get("/api/test").then((res) => {
-  //     setHello(res.data);
-  //   });
-  // }, []);
-  // const navigate = useNavigate();
-  // const location = useLocation();
-  // const [urlBack, setUrlBack] = useState(""); // urlBack 상태 추가
-
-  // 로그인 버튼 클릭시 실행됨
-  // const handleLogin = () => {
-  //   alert(location.pathname);
-  //   setUrlBack = location.pathname;
-  //   console.log("!!!!" + location.pathname);
-  // };
-
+function AppContent({ isAuthenticated, setIsAuthenticated }) {
   return (
     <Routes>
       {/* "/" 경로에 대한 Route 설정 */}
@@ -61,33 +56,45 @@ function AppContent() {
         }
       />
 
-      <Route
-        path="/Login"
-        element={
-          <div className="App">
-            <Login />
-          </div>
-        }
-      />
+      {isAuthenticated ? null : (
+        <>
+          <Route
+            path="/Login"
+            element={
+              <div className="App">
+                <Login onLogin={() => setIsAuthenticated(true)} />
+              </div>
+            }
+          />
 
-      <Route
-        path="/Join"
-        element={
-          <div className="App">
-            <Join />
-          </div>
-        }
-      />
+          <Route
+            path="/Join"
+            element={
+              <div className="App">
+                <Join />
+              </div>
+            }
+          />
 
-      <Route
-        path="/JoinEmail"
-        element={
-          <div className="App">
-            <JoinEmail />
-          </div>
-        }
-      />
+          <Route
+            path="/JoinEmail"
+            element={
+              <div className="App">
+                <JoinEmail />
+              </div>
+            }
+          />
 
+          <Route
+            path="/UserInfo"
+            element={
+              <div className="App">
+                <UserInfo />
+              </div>
+            }
+          />
+        </>
+      )}
       {/* <Route path="/">
           <div className="App">          
             { 백엔드 데이터 : {hello} }
