@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
 import styled from "./Login.module.css";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "./AuthContext";
 
 import Header from "./Header";
-function Login({ onLogin }) {
+function Login() {
   const [id, setId] = useState("");
   const [pw, setPw] = useState("");
   const [keepLoggedIn, setKeepLoggedIn] = useState(false); // 체크박스 상태를 관리합니다.
   const location = useLocation();
   const navigate = useNavigate();
+  const { login } = useAuth();
   const { from } = location.state || { from: { pathname: "/" } };
 
   // console.log("Navigated from:", from);
@@ -46,18 +48,14 @@ function Login({ onLogin }) {
           }
         }
         return response.text();
+        // return response.json();
       })
       .then((data) => {
         console.log("서버 응답 ", data);
+        login(data);
         alert("어서오세요! 기다리고 있었어요!");
         // window.location.replace(from);
         navigate(from);
-        // 로그인 성공 시 로컬 스토리지에 로그인 상태 저장
-        localStorage.setItem("isAuthenticated", "true");
-        console.log(
-          "로컬스토리지 : " + localStorage.getItem("isAuthenticated")
-        );
-        onLogin();
       })
       .catch((error) => {
         if (error.message === "아이디 혹은 비밀번호가 맞지 않습니다.") {

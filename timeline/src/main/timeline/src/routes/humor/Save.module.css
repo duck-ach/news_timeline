@@ -1,0 +1,40 @@
+.title_info_area {
+  border: 1px solid #ddd;
+  border-bottom: none;
+  text-align: left;
+}
+
+.title_info_user {
+  height: 40px;
+  line-height: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.title_info_user button {
+  margin-left: auto;
+  margin-right: 10px;
+}
+
+.in_editor_form {
+  width: 70%;
+  margin: 0 auto;
+}
+
+.title_info_titles {
+  border: 1px solid #ddd;
+
+  margin: 0px 0 10px;
+}
+.in_editor_titleInput {
+  width: 90%;
+  border: none;
+}
+
+.in_editor {
+  border: 1px solid #ddd;
+
+  height: 500px;
+  overflow-y: scroll;
+  overflow-x: scroll;
+}

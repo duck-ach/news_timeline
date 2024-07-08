@@ -1,52 +1,36 @@
 import React from "react";
 import logo from "./logo.svg";
 import "./App.css";
-import { useEffect, useState } from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  useLocation,
-  useNavigate,
-} from "react-router-dom";
-import { Link } from "react-router-dom";
-import axios from "axios";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
+import { AuthProvider, useAuth } from "./routes/AuthContext"; // Import AuthProvider
 import Header from "./routes/Header";
 import Login from "./routes/Login";
 import Home from "./routes/Home";
-// import styled from "./routes/Login.css";
 import Join from "./routes/Join";
 import JoinEmail from "./routes/JoinEmail";
 import UserInfo from "./routes/UserInfo";
+import HumorIndex from "./routes/humor/HumorIndex";
+import Save from "./routes/humor/Save";
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  useEffect(() => {
-    const isAuth = localStorage.getItem("isAuthenticated") === "true";
-    console.log(
-      "app 로컬스토리지 : " + localStorage.getItem("isAuthenticated")
-    );
-
-    setIsAuthenticated(isAuth);
-    console.log("isAuthenticated : " + isAuthenticated);
-  }, [isAuthenticated]);
-
   return (
     <Router>
-      <React.StrictMode>
-        <Header isAuthenticated={isAuthenticated} />
-        <AppContent setIsAuthenticated={setIsAuthenticated} />
-      </React.StrictMode>
+      <AuthProvider>
+        <React.StrictMode>
+          <Header />
+          <AppContent />
+        </React.StrictMode>
+      </AuthProvider>
     </Router>
   );
 }
 
-function AppContent({ isAuthenticated, setIsAuthenticated }) {
+function AppContent() {
+  const { isAuthenticated } = useAuth();
+
   return (
     <Routes>
-      {/* "/" 경로에 대한 Route 설정 */}
       <Route
         path="/Home"
         element={
@@ -56,17 +40,16 @@ function AppContent({ isAuthenticated, setIsAuthenticated }) {
         }
       />
 
-      {isAuthenticated ? null : (
+      {!isAuthenticated ? (
         <>
           <Route
             path="/Login"
             element={
               <div className="App">
-                <Login onLogin={() => setIsAuthenticated(true)} />
+                <Login />
               </div>
             }
           />
-
           <Route
             path="/Join"
             element={
@@ -75,7 +58,6 @@ function AppContent({ isAuthenticated, setIsAuthenticated }) {
               </div>
             }
           />
-
           <Route
             path="/JoinEmail"
             element={
@@ -84,22 +66,35 @@ function AppContent({ isAuthenticated, setIsAuthenticated }) {
               </div>
             }
           />
-
-          <Route
-            path="/UserInfo"
-            element={
-              <div className="App">
-                <UserInfo />
-              </div>
-            }
-          />
         </>
+      ) : (
+        <Route
+          path="/UserInfo"
+          element={
+            <div className="App">
+              <UserInfo />
+            </div>
+          }
+        />
       )}
-      {/* <Route path="/">
-          <div className="App">          
-            { 백엔드 데이터 : {hello} }
+
+      <Route
+        path="/HumorIndex"
+        element={
+          <div className="App">
+            <HumorIndex />
           </div>
-        </Route> */}
+        }
+      />
+
+      <Route
+        path="/Save"
+        element={
+          <div className="App">
+            <Save />
+          </div>
+        }
+      />
     </Routes>
   );
 }

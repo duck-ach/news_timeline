@@ -1,0 +1,22 @@
+a {
+  cursor: pointer;
+}
+
+.board_box {
+  border: 1px solid #000;
+  width: 70%;
+  margin: 0 auto;
+}
+
+.board_list {
+  margin: 10px auto;
+  width: 70%;
+  text-align: left;
+}
+
+.searchBox {
+  width: 70%;
+  display: flex;
+  margin: 0 auto;
+  justify-content: space-evenly;
+}

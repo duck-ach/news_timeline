@@ -1,15 +1,18 @@
 import { Link, useNavigate, useLocation } from "react-router-dom"; // useNavigate
 import style from "./Header.module.css";
-
+import axios from "axios";
 import Home from "./Home";
 import { useEffect, useState } from "react";
-
-function Header({ isAuthenticated }) {
+import { useAuth } from "./AuthContext";
+function Header() {
   const location = useLocation();
-
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태
-
   const navigate = useNavigate();
+
+  const { isAuthenticated, userInfo, login, logout } = useAuth();
+
+  useEffect(() => {
+    console.log("userInfo: ", userInfo);
+  }, [userInfo]);
 
   // 로그인 버튼 클릭시 실행됨
   const handleLogin = () => {
@@ -22,7 +25,8 @@ function Header({ isAuthenticated }) {
   const handleLogout = () => {
     // 로그아웃 로직 수행
     localStorage.setItem("isAuthenticated", "false");
-    setIsLoggedIn(false);
+    logout();
+    // setIsLoggedIn(false);
     navigate("/home");
     window.location.reload();
   };
