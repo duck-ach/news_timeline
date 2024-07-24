@@ -1,9 +1,7 @@
 import React from "react";
-import logo from "./logo.svg";
-import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import { AuthProvider, useAuth } from "./routes/AuthContext"; // Import AuthProvider
+import { AuthProvider, useAuth } from "./routes/AuthContext";
 import Header from "./routes/Header";
 import Login from "./routes/Login";
 import Home from "./routes/Home";
@@ -12,17 +10,20 @@ import JoinEmail from "./routes/JoinEmail";
 import UserInfo from "./routes/UserInfo";
 import HumorIndex from "./routes/humor/HumorIndex";
 import Save from "./routes/humor/Save";
+import "./App.css";
 
 function App() {
   return (
-    <Router>
-      <AuthProvider>
-        <React.StrictMode>
+    <React.StrictMode>
+      <Router>
+        <AuthProvider>
           <Header />
-          <AppContent />
-        </React.StrictMode>
-      </AuthProvider>
-    </Router>
+          <div className="App">
+            <AppContent />
+          </div>
+        </AuthProvider>
+      </Router>
+    </React.StrictMode>
   );
 }
 
@@ -31,70 +32,18 @@ function AppContent() {
 
   return (
     <Routes>
-      <Route
-        path="/Home"
-        element={
-          <div className="App">
-            <Home />
-          </div>
-        }
-      />
-
+      <Route path="/" element={<Home />} />
       {!isAuthenticated ? (
         <>
-          <Route
-            path="/Login"
-            element={
-              <div className="App">
-                <Login />
-              </div>
-            }
-          />
-          <Route
-            path="/Join"
-            element={
-              <div className="App">
-                <Join />
-              </div>
-            }
-          />
-          <Route
-            path="/JoinEmail"
-            element={
-              <div className="App">
-                <JoinEmail />
-              </div>
-            }
-          />
+          <Route path="/Login" element={<Login />} />
+          <Route path="/Join" element={<Join />} />
+          <Route path="/JoinEmail" element={<JoinEmail />} />
         </>
       ) : (
-        <Route
-          path="/UserInfo"
-          element={
-            <div className="App">
-              <UserInfo />
-            </div>
-          }
-        />
+        <Route path="/UserInfo" element={<UserInfo />} />
       )}
-
-      <Route
-        path="/HumorIndex"
-        element={
-          <div className="App">
-            <HumorIndex />
-          </div>
-        }
-      />
-
-      <Route
-        path="/Save"
-        element={
-          <div className="App">
-            <Save />
-          </div>
-        }
-      />
+      <Route path="/HumorIndex" element={<HumorIndex />} />
+      <Route path="/Save" element={<Save />} />
     </Routes>
   );
 }

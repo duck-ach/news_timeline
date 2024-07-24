@@ -1,34 +1,29 @@
-import { Link, useNavigate, useLocation } from "react-router-dom"; // useNavigate
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import style from "./Header.module.css";
+import { useEffect } from "react";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { authState } from "../state/authState";
 import axios from "axios";
-import Home from "./Home";
-import { useEffect, useState } from "react";
-import { useAuth } from "./AuthContext";
+
 function Header() {
   const location = useLocation();
   const navigate = useNavigate();
+  const isAuthenticated = useRecoilValue(authState);
+  const setAuthState = useSetRecoilState(authState);
 
-  const { isAuthenticated, userInfo, login, logout } = useAuth();
-
-  useEffect(() => {
-    console.log("userInfo: ", userInfo);
-  }, [userInfo]);
-
-  // 로그인 버튼 클릭시 실행됨
+  // 로그인 버튼 클릭 시 실행됨
   const handleLogin = () => {
     navigate("/Login", { replace: true, state: { from: location.pathname } });
-
     console.log(location.pathname);
   };
 
   // 로그아웃 함수
   const handleLogout = () => {
     // 로그아웃 로직 수행
-    localStorage.setItem("isAuthenticated", "false");
-    logout();
-    // setIsLoggedIn(false);
+    setAuthState(false); // 로그인 상태를 false로 업데이트
+    localStorage.setItem("isAuthenticated", "false"); // Optional: 서버와의 동기화를 위해 필요하다면 유지
     navigate("/home");
-    window.location.reload();
+    window.location.reload(); // Optional: 강제로 페이지를 새로고침하여 상태 반영
   };
 
   return (
@@ -63,17 +58,6 @@ function Header() {
                   <Link to="/Join">회원가입</Link>
                 </li>
                 <li>
-                  {/* <Link to={`/${urlBack}/Login`}>로그인</Link> */}
-
-                  {/* <Link
-                    to={{
-                      pathname: "/Login",
-                      state: { from: location.pathname },
-                    }}
-                    onClick={handleLogin}
-                  >
-                    로그인
-                  </Link> */}
                   <span onClick={handleLogin}>로그인</span>
                 </li>
               </>

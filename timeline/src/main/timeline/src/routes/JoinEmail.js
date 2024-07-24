@@ -1,5 +1,8 @@
 import axios from "axios";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useSetRecoilState } from "recoil";
+import { authState } from "../state/authState";
 import styled from "./JoinEmail.module.css";
 
 function JoinEmail() {
@@ -47,6 +50,8 @@ function JoinEmail() {
   const [yangruck, setYangruck] = useState("");
   const [isNickReduced, setIsNickReduced] = useState(null);
   const [isIdReduced, setIsIdReduced] = useState(null);
+  const setAuthState = useSetRecoilState(authState);
+  const navigate = useNavigate();
 
   // 중복 확인 버튼 클릭 시 실행되는 함수
   const handleCheckReduce = (type) => {
@@ -193,10 +198,12 @@ function JoinEmail() {
       method: "POST",
       body: formData,
     })
+      .then((response) => response.json()) // 서버에서 반환하는 로그인 토큰을 JSON 형식으로 파싱
       .then((data) => {
         console.log("서버 응답 ", data);
         alert("회원가입이 완료되었습니다.");
-        window.location.href = "/home";
+        setAuthState(true); // 로그인 상태를 true로 업데이트
+        navigate("/home");
       })
       .catch((error) => {
         console.log("에러발생 : ", error);

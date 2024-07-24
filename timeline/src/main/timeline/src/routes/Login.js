@@ -1,19 +1,18 @@
-import { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "./Login.module.css";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useAuth } from "./AuthContext";
-
+import { useSetRecoilState } from "recoil";
+import { authState } from "../state/authState";
 import Header from "./Header";
+
 function Login() {
   const [id, setId] = useState("");
   const [pw, setPw] = useState("");
   const [keepLoggedIn, setKeepLoggedIn] = useState(false); // 체크박스 상태를 관리합니다.
   const location = useLocation();
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const setAuthState = useSetRecoilState(authState); // 리코일 상태 업데이트 함수
   const { from } = location.state || { from: { pathname: "/" } };
-
-  // console.log("Navigated from:", from);
 
   const handleSubmit = (event) => {
     event.preventDefault(); // 기본 제출동작 방지용
@@ -27,20 +26,17 @@ function Login() {
     formData.append("id", id);
     formData.append("pw", pw);
 
-    // 로그인 요청 보낼 때 keepLogin 파라미터 추가
     if (keepLoggedIn) {
       formData.append("keepLogin", true);
     }
 
     fetch(`/api/users/login`, {
-      // URL 파라미터 추가
       method: "POST",
       body: formData,
       credentials: "include", // include cookies in the request
     })
       .then((response) => {
         if (!response.ok) {
-          // throw new Error("서버 오류가 발생했습니다.");
           if (response.status === 401) {
             throw new Error("아이디 혹은 비밀번호가 맞지 않습니다.");
           } else {
@@ -48,14 +44,12 @@ function Login() {
           }
         }
         return response.text();
-        // return response.json();
       })
       .then((data) => {
         console.log("서버 응답 ", data);
-        login(data);
+        setAuthState(true); // 로그인 성공 시 리코일 상태 업데이트
         alert("어서오세요! 기다리고 있었어요!");
-        // window.location.replace(from);
-        navigate(from);
+        navigate(from); // 로그인 후 이전 페이지로 이동
       })
       .catch((error) => {
         if (error.message === "아이디 혹은 비밀번호가 맞지 않습니다.") {
