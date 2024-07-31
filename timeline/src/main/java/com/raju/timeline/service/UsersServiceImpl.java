@@ -85,7 +85,7 @@ public class UsersServiceImpl implements UsersService {
         String pw = request.getParameter("pw");
         String keepLogin = request.getParameter("keepLogin");
 
-        log.info("로그인 시도 유저 아이디 : ", id);
+        log.info("로그인 시도 유저 아이디 : ", request.getParameter("id"));
 
         pw = securityUtil.sha256(pw);
 
@@ -104,7 +104,7 @@ public class UsersServiceImpl implements UsersService {
 
             // 세션추가 == 로그인 처리
             request.getSession().setAttribute("loginUser", loginUser);
-            log.info(id, " 님 로그인 성공");
+            log.info("로그인 성공 아이디 = {}", id);
 
         } else { // id, pw 일치하는 회원 없을 경우
             log.info("Database 에 일치하는 회원이 없습니다");
