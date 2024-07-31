@@ -3,6 +3,7 @@ package com.raju.timeline.controller;
 import com.raju.timeline.service.UsersService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 @Controller
 public class UsersController {
 
@@ -27,7 +29,6 @@ public class UsersController {
     // 회원가입
     @PostMapping("/api/users/save")
     public void usersSave(HttpServletRequest request, HttpServletResponse response) {
-        System.out.println("가입 컨트롤러 들어옴");
         usersService.save(request, response);
     }
 
@@ -37,8 +38,7 @@ public class UsersController {
     public Map<String, Object> checkReduceId(@RequestParam(value = "id", required = false, defaultValue = "") String id) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("id", id);
-        System.out.println("map = " + map);
-        System.out.println("result = " + usersService.isReduceId(map));
+        log.info("아이디 체크 : ", id);
         return usersService.isReduceId(map);
     }
 
@@ -48,8 +48,7 @@ public class UsersController {
     public Map<String, Object> checkReduceNick(@RequestParam(value = "nickname", required = false, defaultValue = "") String nickname) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("nickname", nickname);
-        System.out.println("map = " + map);
-        System.out.println("result = " + usersService.checkReduceNick(map));
+        log.info("아이디 체크 : ", nickname);
         return usersService.checkReduceNick(map);
     }
 
