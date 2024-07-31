@@ -6,6 +6,7 @@ import java.security.MessageDigest;
 
 @Component
 public class SecurityUtil {
+
     public String preventXSS(String str) {
         str = str.replace("<", "&lt;");
         str = str.replace(">", "&gt;");
