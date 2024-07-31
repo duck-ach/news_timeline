@@ -10,15 +10,9 @@ spring:
   web:
     resources:
       static-locations: /resources/**
-
-  # database connection
-  datasource:
-    hikari:
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      username: tl_master
-      password: 1234
-      jdbc-url: jdbc:mysql://192.168.0.8:3306/timeline?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-      #jdbc-url: jdbc:mysql://localhost:3306/timeline?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+  # database active mode (dev, prod)
+  profiles:
+      active: dev
 
 # mybatis
 mybatis:

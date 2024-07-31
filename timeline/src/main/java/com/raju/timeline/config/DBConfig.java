@@ -12,35 +12,36 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @MapperScan(basePackages = "com.raju.timeline.mapper")
-@PropertySource(value = {"classpath:application.yml"})
+@PropertySource(value = {"classpath:application-${spring.profiles.active}.properties"})
 @EnableTransactionManagement
 @Configuration
 public class DBConfig {
 
-    @Value(value = "${spring.datasource.hikari.driver-class-name}")
+    @Value("${spring.datasource.driver-class-name}")
     private String driverClassName;
 
-    @Value(value="${spring.datasource.hikari.jdbc-url}")
+    @Value("${spring.datasource.url}")
     private String jdbcUrl;
 
-    @Value(value="${spring.datasource.hikari.username}")
+    @Value("${spring.datasource.username}")
     private String username;
 
-    @Value(value="${spring.datasource.hikari.password}")
+    @Value("${spring.datasource.password}")
     private String password;
 
-    @Value(value="${mybatis.mapper-locations}")
+    @Value("${mybatis.mapper-locations}")
     private String mapperLocations;
 
-    @Value(value="${mybatis.config-location}")
+    @Value("${mybatis.config-location}")
     private String configLocation;
 
     @Bean
-    public HikariConfig config() {
+    public HikariConfig hikariConfig() {
         HikariConfig config = new HikariConfig();
         config.setDriverClassName(driverClassName);
         config.setJdbcUrl(jdbcUrl);
@@ -49,28 +50,27 @@ public class DBConfig {
         return config;
     }
 
-    @Bean(destroyMethod="close")
+    @Bean(destroyMethod = "close")
     public HikariDataSource dataSource() {
-        return new HikariDataSource(config());
+        return new HikariDataSource(hikariConfig());
     }
 
     @Bean
-    public SqlSessionFactory factory() throws Exception {
-        SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
-        bean.setDataSource(dataSource());
-        bean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources(mapperLocations));
-        bean.setConfigLocation(new PathMatchingResourcePatternResolver().getResource(configLocation));
-        return bean.getObject();
+    public SqlSessionFactory sqlSessionFactory() throws Exception {
+        SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();
+        factoryBean.setDataSource(dataSource());
+        factoryBean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources(mapperLocations));
+        factoryBean.setConfigLocation(new PathMatchingResourcePatternResolver().getResource(configLocation));
+        return factoryBean.getObject();
     }
 
     @Bean
     public SqlSessionTemplate sqlSessionTemplate() throws Exception {
-        return new SqlSessionTemplate(factory());
+        return new SqlSessionTemplate(sqlSessionFactory());
     }
 
     @Bean
-    public TransactionManager transactionManager() {
+    public PlatformTransactionManager transactionManager() {
         return new DataSourceTransactionManager(dataSource());
     }
-
 }
