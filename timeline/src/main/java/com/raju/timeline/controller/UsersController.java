@@ -67,7 +67,7 @@ public class UsersController {
 
     // 회원 정보 조회
     @ResponseBody // 비동기 처리
-    @GetMapping(value="/users/info", produces= MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value="/api/users/info", produces= MediaType.APPLICATION_JSON_VALUE)
     public Map<String, Object> usersInfo(HttpServletRequest request, HttpServletResponse response) {
         return usersService.usersInfo(request, response);
     }

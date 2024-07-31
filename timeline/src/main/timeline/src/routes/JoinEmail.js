@@ -1,5 +1,8 @@
 import axios from "axios";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useSetRecoilState } from "recoil";
+import { authState } from "../state/authState";
 import styled from "./JoinEmail.module.css";
 
 function JoinEmail() {
@@ -47,6 +50,8 @@ function JoinEmail() {
   const [yangruck, setYangruck] = useState("");
   const [isNickReduced, setIsNickReduced] = useState(null);
   const [isIdReduced, setIsIdReduced] = useState(null);
+  const setAuthState = useSetRecoilState(authState);
+  const navigate = useNavigate();
 
   // 중복 확인 버튼 클릭 시 실행되는 함수
   const handleCheckReduce = (type) => {
@@ -122,6 +127,7 @@ function JoinEmail() {
   const handlesSubmit = (event) => {
     event.preventDefault(); // 기본 제출동작 방지용
 
+    console.log(gender);
     // 아이디 유효성 검사
     if (!isIdValid(id)) {
       alert("아이디는 영문자와 숫자로 이루어진 4자 이상이어야 합니다.");
@@ -192,10 +198,12 @@ function JoinEmail() {
       method: "POST",
       body: formData,
     })
+      .then((response) => response.json()) // 서버에서 반환하는 로그인 토큰을 JSON 형식으로 파싱
       .then((data) => {
         console.log("서버 응답 ", data);
         alert("회원가입이 완료되었습니다.");
-        window.location.href = "/home";
+        setAuthState(true); // 로그인 상태를 true로 업데이트
+        navigate("/home");
       })
       .catch((error) => {
         console.log("에러발생 : ", error);
@@ -327,14 +335,14 @@ function JoinEmail() {
           <input
             type="radio"
             name="gender"
-            value={gender}
+            value="여성"
             onChange={(e) => setGender(e.target.value)}
           />
           <label htmlFor="women">여성</label>
           <input
             type="radio"
             name="gender"
-            value={gender}
+            value="남성"
             onChange={(e) => setGender(e.target.value)}
           />
           <label htmlFor="men">남성</label>
@@ -378,7 +386,7 @@ function JoinEmail() {
             </select>
             {/* &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; */}
             <br />
-            <input
+            {/* <input
               type="radio"
               name="yangruck"
               value={yangruck}
@@ -391,7 +399,8 @@ function JoinEmail() {
               value={yangruck}
               onChange={(e) => setYangruck(e.target.value)}
             />
-            음력
+            음력 */}
+            <br />
           </p>
         </div>
         {/* 생년월일 끝 */}
